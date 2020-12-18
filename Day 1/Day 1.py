@@ -9,7 +9,7 @@ smaller_half = []
 # __________________   __________________
 # | Smaller Half i | + | Bigger half j |
 # ------------------   ------------------
-# Changed from Github
+# Changed from pycharm
 
 while True:
     if bigger_half[0] > goal // 2:
