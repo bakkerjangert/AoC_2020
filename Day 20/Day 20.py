@@ -163,15 +163,10 @@ sea_horse = [(18, 0),
 
 sea_horse_data = (19, 2, len(sea_horse))
 
-
-search_grid = SubGrid('MIAN', big_data)
-# search_grid.mirror_x()
-# search_grid.mirror_y()
-# search_grid.rotate()
-# search_grid.rotate()
-# search_grid.rotate()
+search_grid = SubGrid('MAIN', big_data)
 no_of_monsters = 0
 i = 0
+
 while no_of_monsters == 0:
     for y in range(len(search_grid.grid) - sea_horse_data[1]):
         for x in range(len(search_grid.grid[0]) - sea_horse_data[0]):
