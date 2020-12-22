@@ -16,7 +16,7 @@ for line in lines:
         messages.append(line)
         continue
     if '"' in line:
-        encoded[int(line.split(':')[0])] = tuple(line.split('"')[1].split('"')[0])
+        rules[int(line.split(':')[0])] = tuple(line.split('"')[1].split('"')[0])
     else:
         string = line.replace('| ', '')
         string = string.split(': ')[1]
@@ -31,36 +31,53 @@ def decode(x, y):
             # print(x_sub + y_sub)
     return solution
 
+for_zero = {1: set()}
+zero_index = 1
+temp = []
+sequence = [0]
 
-while 0 not in encoded.keys():
-    new_rules = rules.copy()
-    for key in rules.keys():
-        check = True
-        for number in rules[key]:
-            if number not in encoded.keys():
-                check = False
-                break
-        if check:
-            sub_set = list()
-            check_numbers = rules[key]
-            del new_rules[key]
-            if len(check_numbers) == 1:
-                encoded[key] = rules[check_numbers[0]]
-            else:
-                for i in range(len(check_numbers) // 2):
-                    val_1, val_2 = encoded[check_numbers[0 + 2 * i]], encoded[check_numbers[0 + 2 * i]]
-                    for item in decode(val_1, val_2):
-                        sub_set.append(item)
-            encoded[key] = set(sub_set)
-    rules = new_rules.copy()
-    for key in encoded.keys():
-        print(key, encoded[key])
+while True:
+    for i in range(len(sequence)):
+        change = False
+        val_1 = sequence[i]
+        if val_1 == 'a' or val_1 == 'b':
+            pass
+        else:
+            change = True
+            new_sequence = sequence.copy()
+            next_rule = list(rules[val_1])
+            index = new_sequence.index(val_1)
+            if len(next_rule) == 4:
+                new_sequence_2 = new_sequence.copy()
+                del new_sequence_2[index]
+                for j in range(2):
+                    new_sequence_2.insert(index, next_rule.pop(-1))
+                temp.append(new_sequence_2.copy())
+            del new_sequence[index]
+            while len(next_rule) > 0:
+                new_sequence.insert(index, next_rule.pop(-1))
+            break
+    if change:
+        sequence = new_sequence.copy()
+    if sequence.count('a') + sequence.count('b') == len(sequence):
+        if len(for_zero[zero_index]) > 9999:
+            zero_index += 1
+            for_zero[zero_index] = set()
 
+        for_zero[zero_index].add(''.join(sequence))
+        if len(temp) != 0:
+            sequence = temp.pop(0).copy()
+        else:
+            break
 
-# for item in rules.items():
-#     if len(item[1]) == 3:
-#         print('THERE IS A 3!!!')
-#     print(item)
-#
-# for item in encoded.items():
-#     print(item)
+answer = 0
+
+for message in messages:
+    for sub_set in for_zero.values():
+        if message in sub_set:
+            answer += 1
+            break
+
+print(f'The answer to part 1 = {answer}')
+
+# Wrong answer = 26,
