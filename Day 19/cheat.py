@@ -14,8 +14,8 @@ def createRegex(index, rules):
 
 def partOne():
     rules = {x: y.replace("\"", "") for x, y in [line.split(": ") for line in inputString if ":" in line]}
-    print(rules)
     expression = re.compile(createRegex('0', rules))
+    print(createRegex('0', rules))
     print(len([line for line in [x for x in inputString if ":" not in x and len(x) > 0] if expression.fullmatch(line) is not None]))
 
 def partTwo():

@@ -46,18 +46,15 @@ print(f'The answer to part 1 = {answer}')
 class Play(object):
     def __init__(self, hand, game):
         self.game = game
-        self.player_1 = list(hand[0])
-        self.player_2 = list(hand[1])
-        self.hands = set()
-        self.hands.add((tuple(self.player_1), tuple(self.player_2)))
+        self.player_1, self.player_2 = list(hand[0]), list(hand[1])
+        self.hands_1, self.hands_2 = set(tuple(self.player_1)), set(tuple(self.player_2))
+        # self.hands.add((tuple(self.player_1), tuple(self.player_2)))
         self.card_1, self.card_2 = None, None
 
     def draw_card(self):
-        self.card_1 = self.player_1.pop(0)
-        self.card_2 = self.player_2.pop(0)
+        self.card_1, self.card_2 = self.player_1.pop(0), self.player_2.pop(0)
         if self.card_1 <= len(self.player_1) and self.card_2 <= len(self.player_2):
-            new_p1 = tuple(self.player_1[0:self.card_1])
-            new_p2 = tuple(self.player_2[0:self.card_2])
+            new_p1, new_p2 = tuple(self.player_1[0:self.card_1]), tuple(self.player_2[0:self.card_2])
             return True, tuple((new_p1, new_p2))
         else:
             if self.card_1 > self.card_2:
@@ -80,10 +77,11 @@ class Play(object):
             return True, 'p2'
         elif len(self.player_2) == 0:
             return True, 'p1'
-        elif (tuple(self.player_1), tuple(self.player_2)) in self.hands:
+        elif tuple(self.player_1) in self.hands_1 or tuple(self.player_2) in self.hands_2:
             return True, 'p1'
         else:
-            self.hands.add((tuple(self.player_1), tuple(self.player_2)))
+            self.hands_1.add(tuple(self.player_1))
+            self.hands_2.add(tuple(self.player_2))
             return False, None
 
 
